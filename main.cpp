@@ -51,7 +51,7 @@ void setup() {
 }
 
 void loop() { 
-/ Send API request to get train data in JSON format every 15 seconds
+// Send API request to get train data in JSON format every 15 seconds
     if ((millis() - msLastAPI) > APIinterval) {
       //Serial.printf("millis - msLastAPI = %d\n", millis() - msLastAPI);
       // Serial.println(millis());
