@@ -21,7 +21,7 @@ void API_Call(JsonDocument &doc) {
 
   //Serial.println("Start API_Call\n");
 
-    http.useHTTP10(true);
+  http.useHTTP10(true);
   http.begin(client, API_URL);
   http.GET();
 
@@ -52,12 +52,8 @@ void API_Call(JsonDocument &doc) {
     Serial.println(error.c_str());
   }
 
-  // Could delete, not really using this
-  for (JsonObject train : doc["ctatt"]["route"][0]["train"].as<JsonArray>()) {
-   }
-
   Serial.printf("Start LED off ");
-  for (int i = 0; i + 1 < 17; i++) // Cycle through the 17 trains
+  for (int i = 0; i + 1 < 17; i++) // Cycle through the 17 trains. Might want to add something to find array size instead
   {
     direction = doc["ctatt"]["route"][0]["train"][i]["trDr"];
     isApp = doc["ctatt"]["route"][0]["train"][i]["isApp"];
@@ -67,13 +63,13 @@ void API_Call(JsonDocument &doc) {
     prdt = doc["ctatt"]["route"][0]["train"][i]["prdt"];
 
     if (direction == SBRed &&
-        isApp == off) // Confirm train is Southbound & at station
+        isApp == off) // Confirm train is Southbound & not at station
     {
       for (int y = 0; y + 1 < SBarr_size;
            y++) // Loop through stopIDs (stations)
       {
         if (nextStpId == SB_station[0][y]) // If current value is equal to Stop
-                                           // ID, set the index value
+                                           // ID, set the index value to off
         {
 /*           Serial.printf("\n");
           Serial.printf("LED Off - %s", nextStationName);
@@ -100,7 +96,7 @@ void API_Call(JsonDocument &doc) {
       for (int y = 0; y + 1 < SBarr_size; y++) // Loop through stopIDs (stations)
       {
         if (nextStpId == SB_station[0][y]) // If current value is equal to Stop
-                                        // ID, set the index value
+                                        // ID, set the index value to on
         {
 /*           Serial.printf("\n");
           Serial.printf("LED On - %s", nextStationName);
@@ -153,7 +149,7 @@ void API_Call(JsonDocument &doc) {
         //Find index of Stop ID
         for (int y = 0; y + 1 < SBarr_size; y++) // Loop through stopIDs (stations)
         {
-          if (nextStpId == SB_station[0][y]) // If current value is equal to Stop ID
+          if (nextStpId == SB_station[0][y]) // If current value is equal to Stop ID, set index to blink
           {
 /*             Serial.printf("\n");
             Serial.printf("LED Blink - %s", nextStationName);
@@ -167,7 +163,7 @@ void API_Call(JsonDocument &doc) {
              y++) // Loop through stopIDs (stations)
         {
           if (nextStpId ==
-              SB_station[0][y]) // If current value is equal to Stop ID
+              SB_station[0][y]) // If current value is equal to Stop ID, set index to off
           {
 /*             Serial.printf("\n");
             Serial.printf("LED Off - %s", nextStationName);
@@ -250,12 +246,6 @@ void API_Call(JsonDocument &doc) {
         }
       }
     }
-
-      // Check memory
-      /*   int memoryUsed = doc.memoryUsage();
-        Serial.println("-----Printing memory used-----");
-        Serial.println(memoryUsed); */
-
 
   //Serial.println("End Show_LED\n");
 }
