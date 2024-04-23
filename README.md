@@ -9,4 +9,4 @@ https://www.transitchicago.com/developers/ttdocs/
 Apply for API key
 Add key to API_URL and update the WiFi SSID and password in secrets.h
 Flash to esp32
-Connect data wire to led strip (WS1218B or something similar cut to length of 33) using data pin 4.
+Connect data wire to led strip (WS2812B or something similar cut to length of 33) using data pin 4.
