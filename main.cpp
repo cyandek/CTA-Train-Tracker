@@ -12,6 +12,8 @@
 #define DATA_PIN 4
 #define FASTLED_INTERNAL
 
+void WiFi_SmartConfig();
+void WiFi_Hardcoded();
 void API_Call(JsonDocument &doc);
 void Clear_LED();
 void Show_LED();
@@ -22,22 +24,8 @@ void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
     pinMode(DATA_PIN, OUTPUT);
 
-    wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
-    wifiMulti.addAP(WIFI_SSID_PHONE, WIFI_PASSWORD_PHONE);
-    wifiMulti.addAP(WIFI_SSID_LP, WIFI_PASSWORD_LP);
-
-    while (wifiMulti.run() != WL_CONNECTED)
-    {
-        delay(100);
-        WiFi.mode(WIFI_STA); // To connect to iPhone hotspot
-        WiFi.disconnect();
-        WiFi.reconnect();
-    }
-
-    // Print connected to wifi
-    digitalWrite(LED_BUILTIN, WiFi.status() == WL_CONNECTED);
-    Serial.println("Wifi Connected");
-    delay(100);
+    WiFi_SmartConfig();        //Configure WiFi with Espressif Esptouch app
+    // WiFi_Hardcoded();       //Configure WiFi with hardcoded SSID and Password in secrets.h
 
     // Add FastLED
     FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
