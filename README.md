@@ -10,12 +10,15 @@ CTA Train Tracker API
 https://www.transitchicago.com/developers/ttdocs/
 
 Apply for API key
+
 Add key to API_URL in secrets.h
+
 Download the Espressif Esptouch app to configure the WiFi or update the WiFi SSID and password in secrets.h, uncomment the 'WiFi_Hardcoded' function in main.cpp and comment the 'WiFi_SmartConfig' in main.cpp
 
 Flash to ESP32
 
 I'm powering the ESP32 and LED strip with a 5V 10A DC power supply (could get away with less amps but its what I had laying around). 
+
 ![ESP32 Wiring 1](https://github.com/cyandek/CTA-Train-Tracker/assets/158543011/eb11054e-752a-485e-87bc-d00ead1026d0)
 
 I split the +/- wires from the power supply to power both with the same PSU. You could power them separately, but I believe they would need to share a ground wire.
