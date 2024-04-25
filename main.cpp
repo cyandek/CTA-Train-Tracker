@@ -28,7 +28,7 @@ void setup() {
     // WiFi_Hardcoded();       //Configure WiFi with hardcoded SSID and Password in secrets.h
 
     // Add FastLED
-    FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
+    FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);  //Update 'WS2812B' if you're using a different LED strip. See Fast LED documentation
     FastLED.clear();
     FastLED.clearData();
     FastLED.setBrightness(150);
@@ -39,7 +39,7 @@ void setup() {
 }
 
 void loop() { 
-// Send API request to get train data in JSON format every 15 seconds
+// Send API request to get train data in JSON format every 15 seconds (you can change the intervals in declarations.hpp)
     if ((millis() - msLastAPI) > APIinterval) {
       //Serial.printf("millis - msLastAPI = %d\n", millis() - msLastAPI);
       // Serial.println(millis());
