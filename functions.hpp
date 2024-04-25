@@ -8,6 +8,54 @@
 #include <string>
 #include <time.h>
 
+//Wifi function to use the Espressif Esptouch app to configure the wifi
+void WiFi_SmartConfig(){
+
+  // Init WiFi as Station, start SmartConfig 
+  WiFi.mode(WIFI_AP_STA);
+  WiFi.beginSmartConfig();
+
+  // Wait for SmartConfig packet from mobile
+  Serial.println("Waiting for SmartConfig.");
+  while (!WiFi.smartConfigDone()) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("SmartConfig received.");
+
+  // Wait for WiFi to connect to AP
+  Serial.println("Waiting for WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("WiFi Connected.");
+
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.localIP());
+}
+
+//Function to connect to WiFi using hardcoded SSID and Password stored in secrets.h
+void WiFi_Hardcoded(){
+
+wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
+
+while (wifiMulti.run() != WL_CONNECTED)
+{
+    delay(100);
+    WiFi.mode(WIFI_STA); // To connect to iPhone hotspot
+    WiFi.disconnect();
+    WiFi.reconnect();
+}
+
+// Print connected to wifi
+digitalWrite(LED_BUILTIN, WiFi.status() == WL_CONNECTED);
+Serial.println("Wifi Connected");
+delay(100); 
+}
 
 // Clear LED strip
 void Clear_LED() {
