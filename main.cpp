@@ -1,6 +1,7 @@
-#include <Arduino.h>
+#include "WiFi.h"
 #include "functions.hpp"
 #include "secrets.h"
+#include <Arduino.h>
 #include <ArduinoJson.h>
 #include <FastLED.h>
 #include <HTTPClient.h>
@@ -8,7 +9,7 @@
 #include <iostream>
 
 // Delarations for LED strip
-#define NUM_LEDS 33
+#define NUM_LEDS 66
 #define DATA_PIN 4
 #define FASTLED_INTERNAL
 
@@ -17,54 +18,61 @@ void WiFi_Hardcoded();
 void API_Call(JsonDocument &doc);
 void Clear_LED();
 void Show_LED();
+void Clear_Stations();
+void NB_Stations_On();
+void SB_Stations_On();
+void NB_Stations_Blink();
+void SB_Stations_Blink();
 
+void setup() { // Setup code to run once
+  Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(DATA_PIN, OUTPUT);
 
-void setup() { 
-    Serial.begin(115200);
-    pinMode(LED_BUILTIN, OUTPUT);
-    pinMode(DATA_PIN, OUTPUT);
+  // WiFi_SmartConfig();
+  WiFi_Hardcoded();
 
-    WiFi_SmartConfig();        //Configure WiFi with Espressif Esptouch app
-    // WiFi_Hardcoded();       //Configure WiFi with hardcoded SSID and Password in secrets.h
-
-    // Add FastLED
-    FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);  //Update 'WS2812B' if you're using a different LED strip. See Fast LED documentation
-    FastLED.clear();
-    FastLED.clearData();
-    FastLED.setBrightness(150);
-    fill_solid(leds, NUM_LEDS, CRGB::Black);
-    FastLED.show();
-    //Serial.println("All LEDs should be off now (setup)");
-
+  // Add FastLED
+  FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
+  FastLED.clear();
+  FastLED.clearData();
+  FastLED.setBrightness(150);
+  fill_solid(leds, NUM_LEDS, CRGB::Black);
+  FastLED.show();
 }
 
-void loop() { 
-// Send API request to get train data in JSON format every 15 seconds (you can change the intervals in declarations.hpp)
-    if ((millis() - msLastAPI) > APIinterval) {
-      //Serial.printf("millis - msLastAPI = %d\n", millis() - msLastAPI);
-      // Serial.println(millis());
+void loop() { // Main code to run repeatedly
 
-      Serial.println("Call API function\n");
+  // Send API request to get train data in JSON format every 15 seconds
+  if ((millis() - msLastAPI) > APIinterval) {
 
-      available = false;
-      Serial.println("Locked\n");
-
-      API_Call(doc); // HTTP request to get json data and store it in json
-                     // document called doc that will be passed to functions to
-                     // read and control LED based off the train data
-
-      // Reset time
-      //Serial.println("---- reset msLastAPI----\n");
-      msLastAPI = millis();
-
-      available = true;
-      Serial.println("Unlocked\n");
+    if (debug) {
+      Serial.printf("millis - msLastAPI = %d\n", millis() - msLastAPI);
+      Serial.println(millis());
     }
-    delay(blinkinterval);
-    //Serial.printf("Blink interval over\n");
 
-    if (available == true) {
-      Serial.println("Call Show_LED\n");
-      Show_LED();
-    }
+    Serial.println("Call API function\n");
+
+    available = false;
+    Serial.println("Threads locked\n");
+
+    API_Call(doc); // HTTP rrequest to get json data and store it in json
+                   // document called doc that will be passed to threads to
+                   // read and control LED based off the train data
+
+    // Reset time
+    Serial.println("---- reset msLastAPI----\n");
+    msLastAPI = millis();
+
+    available = true;
+    Serial.println("Threads unlocked\n");
+  }
+
+  if (available == true) {
+    Serial.println("Call Show_LED\n");
+    Show_LED();
+  }
+
+  delay(blinkinterval);
+  Serial.printf("Interval over\n");
 }
