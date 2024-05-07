@@ -1,10 +1,12 @@
 # CTA-Train-Tracker
-This project uses an ESP32 to pull CTA train data from the Train Tracker API provided by the CTA and uses the data to visualize southbound redline trains on an LED strip.
+This project uses an ESP32 to pull CTA train data from the Train Tracker API provided by the CTA and uses the data to visualize  redline trains on an LED strip.
 
 
 ![Sample Video](https://github.com/cyandek/CTA-Train-Tracker/assets/158543011/0e763334-79be-4d1b-958a-f04830bb0f2d)
 
-I printed out my own map to lay over the LED strip (the printer cut off the 95th and North/Clybourn stops). The LEDs will turn on when a southbound train arrives at a station and the LEDs will blink when a train is arriving in less than three minutes. The data is refreshed every 15 seconds. 
+I printed out my own map to lay over the LED strip (the printer cut off the 95th and North/Clybourn stops). (Video is outdated and only shows the Soutbound strip).
+
+The LEDs will turn on when a southbound train arrives at a station and the LEDs will blink when a train is arriving in less than three minutes. The data is refreshed every 15 seconds. 
 
 CTA Train Tracker API
 https://www.transitchicago.com/developers/ttdocs/
